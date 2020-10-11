@@ -1,7 +1,7 @@
 import numpy as np 
 import random 
 
-#Uniform Crossover
+# Uniform Crossover
 def uniform_cross_over(parent_x, parent_y, rate):
 
     offspring_1 = parent_x.copy()
@@ -11,13 +11,14 @@ def uniform_cross_over(parent_x, parent_y, rate):
 
     for i in range(length):
         random_rate = random.random()
-        print(random_rate)
+        #print(random_rate)
         if random_rate < rate:
         
             offspring_1[i], offspring_2[i] = parent_y[i], parent_x[i]
     
     return offspring_1, offspring_2
 
+# Single Point  Crossover
 def single_point_cross_over(parent_x, parent_y):
 
     offspring_1 = parent_x.copy()
@@ -27,7 +28,7 @@ def single_point_cross_over(parent_x, parent_y):
     length = len(parent_x)
     length_random = length - 1
     cross_point = random.randint(0, length_random)
-    print(cross_point)
+    #print(cross_point)
 
     # interchanging the genes 
     for i in range(cross_point, length):
@@ -49,6 +50,7 @@ class OneMaxProblem:
     """ Initialize populattion Step"""
 
     def initialize_population(self):
+
         popu1 = np.zeros(shape=(self.population_size//2,self.problem_size),dtype=int)
         popu2 = np.ones(shape=(self.population_size//2,self.problem_size),dtype=int)
 
@@ -89,14 +91,14 @@ class OneMaxProblem:
         combination_population = np.concatenate((self.population, offspring),axis=0)
         return combination_population
     
-    #Tournament Step
+    """ Tournament Step """
 
     # Fitness Function
     def fitness(self,chromosome):
         #score_fitness = np.sum(chromosome)
-        if self.type_problem == "OneMax":
+        if self.type_problem == "Normal":
             return np.sum(chromosome)
-        elif self.type_problem =="Trap":
+        elif self.type_problem =="Trap5":
             return False
             # Fix code
             # if score_fitness != len(chromosome):
@@ -116,12 +118,12 @@ class OneMaxProblem:
                 low = i
                 i = i + self.tournament_size
                 groups.append((low, i-1))
-        print(groups)
+        #print(groups)
         
         for _ in range(times):
-            print("selected_population_before = {}".format(selected_population))
+            #print("selected_population_before = {}".format(selected_population))
         
-            print(pool_copy)
+            #print(pool_copy)
         
             for (low, high) in groups:
                 index_best_chromosome = -9
@@ -137,7 +139,7 @@ class OneMaxProblem:
                         
                 selected_population.append(pool_copy[index_best_chromosome].copy())
             
-            print("selected_population = {}".format(selected_population))
+            #print("selected_population = {}".format(selected_population))
 
         
             np.random.shuffle(pool_copy)
@@ -155,46 +157,44 @@ class OneMaxProblem:
         return True
     
     """ RUN """
-    def run(self):#(seed, _type, population_size, problem_size, tournament_size, number_of_evaluations):
+    def run(self):
 
         # initialize population 
         self.initialize_population()
-        print("population: {}".format(self.population))
+        #print("population: {}".format(self.population))
 
         self.number_of_evaluations += self.population_size
         
-        while (not self.check_convergence()):#population) :
-            print("population: {}".format(self.population))
+        while (not self.check_convergence()):
+            #print("population: {}".format(self.population))
             
             # cross over
             offspring = self.cross_over()
-            print("offspring = {}".format(offspring))
+            #print("offspring = {}".format(offspring))
 
             self.number_of_evaluations += self.population_size
-            print("number_of_evaluations = {}".format(self.number_of_evaluations))
-            #input()
+            #print("number_of_evaluations = {}".format(self.number_of_evaluations))
 
             # P+O Pool step
             combination_population = self.pool_POP(offspring)
-            print("combination_population = {}".format(combination_population))
-            #input()
+            #print("combination_population = {}".format(combination_population))
 
             # Tournament selection
             selected_population = self.tournament(combination_population)
-            print("selected_population = {}".format(selected_population))
-            #input()
-
+            #print("selected_population = {}".format(selected_population))
+        
             # Update the population
             self.population = selected_population.copy()
         return self.number_of_evaluations, self.population
-        
+"""     
 if __name__ == "__main__":
-    Problem =OneMaxProblem(18520120,"OneMax","UX",4,10,4,0)
+    Problem =OneMaxProblem(18520120,"Normal","UX",4,10,4,0)
     number_of_evaluations,population = Problem.run()
     print("------- Finsh ----------------")
     print("number_of_evaluations = {}".format(number_of_evaluations))
     print("population = {}".format(population))
-
+"""
 
 
             
+
