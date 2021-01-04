@@ -1,0 +1,5 @@
+N = 128 - average: 3.473 - std: 3.456 
+N = 256 - average: 1.424 - std: 2.103 
+N = 512 - average: 2.247 - std: 3.219 
+N = 1024 - average: 1.094 - std: 1.583 
+N = 2048 - average: 0.045 - std: 0.07 
